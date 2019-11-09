@@ -4,6 +4,7 @@ import com.epam.framework.driver.DriverSingleton;
 import com.epam.framework.page.CalculatorPage;
 import com.epam.framework.page.CloudPage;
 import com.epam.framework.page.TenMinutesMailPage;
+import com.epam.framework.user.User;
 import com.epam.framework.util.TestListener;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
@@ -16,22 +17,22 @@ import org.testng.annotations.Listeners;
 public class CommonConditions {
 
     protected WebDriver driver;
-    CloudPage cloud;
-    CalculatorPage calculator;
-    TenMinutesMailPage tenMinutes;
+    CloudPage cloudPage;
+    CalculatorPage calculatorPage;
+    TenMinutesMailPage tenMinutesPage;
 
     @BeforeTest
-    public void beforeTest() throws InterruptedException {
+    public void beforeTest() {
         driver = DriverSingleton.getDriver();
-        cloud = new CloudPage(driver);
-        calculator = new CalculatorPage(driver);
-        tenMinutes = new TenMinutesMailPage(driver);
-        cloud.search();
-        calculator.fillingTheForm();
-        calculator.sentEmail();
-        tenMinutes.openTenMinuteMail();
-        tenMinutes.comeToGooglePage();
-        tenMinutes.waitEmailFromGoogle();
+        cloudPage = new CloudPage(driver);
+        calculatorPage = new CalculatorPage(driver);
+        tenMinutesPage = new TenMinutesMailPage(driver);
+        cloudPage.search();
+        calculatorPage.fillingTheForm();
+        calculatorPage.sentEmail();
+        tenMinutesPage.openTenMinuteMail();
+        tenMinutesPage.comeToGooglePage();
+        tenMinutesPage.waitEmailFromGoogle();
     }
 
     @AfterTest

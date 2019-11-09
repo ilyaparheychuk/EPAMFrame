@@ -1,14 +1,12 @@
 package com.epam.framework.page;
 
-import org.openqa.selenium.JavascriptExecutor;
+import com.epam.framework.user.User;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class CalculatorPage {
+public class CalculatorPage extends AbstractPage {
 
     @FindBy(xpath = ".//input[@id='input_53']")
     private WebElement numberOfInstances;
@@ -56,7 +54,7 @@ public class CalculatorPage {
     private WebElement addToEstimate;
 
     @FindBy(xpath = ".//b[@class='ng-binding']")
-    private WebElement waitElement;
+    private WebElement waitJustElement;
 
     @FindBy(xpath = "//*[@id=\'email_quote\']")
     private WebElement emailEstimate;
@@ -64,50 +62,44 @@ public class CalculatorPage {
     @FindBy(xpath = "//*[@id=\'input_415\']")
     private WebElement emailToSent;
 
-    WebDriver driver;
+    @FindBy(xpath = "(.//b[@class='ng-binding'])[2]")
+    private WebElement costInGoogleCalculator;
 
     public CalculatorPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
         PageFactory.initElements(driver, this);
     }
 
     public void fillingTheForm() {
-        (new WebDriverWait(driver, 50))
-                .until(ExpectedConditions.visibilityOf(numberOfInstances))
-                .isDisplayed();
-        numberOfInstances.click();
-        numberOfInstances.sendKeys("4");
+        waitElement(numberOfInstances).click();
+        numberOfInstances.sendKeys(new User()
+                .getNumberOfInstances());
         typeInstance.click();
         typeInstanceStandard.click();
+        waitElement(addGPU);
         addGPU.click();
         numberOfGPU.click();
         numberOfGPUOne.click();
         typeOfGPU.click();
         typeOfGPUTesla.click();
-        JavascriptExecutor jse = (JavascriptExecutor) driver;
-        jse.executeScript("window.scrollBy(0,400)");
-        (new WebDriverWait(driver, 40))
-                .until(ExpectedConditions.visibilityOf(localSSD))
-                .click();
+        scrollDown();
+        waitElement(localSSD).click();
         localSSDWhatIWant.click();
         datacenter.click();
-        (new WebDriverWait(driver, 40))
-                .until(ExpectedConditions.visibilityOf(locationDatacenter))
-                .click();
+        waitElement(locationDatacenter).click();
         commited.click();
         commitedOneYear.click();
         addToEstimate.click();
-        (new WebDriverWait(driver, 50))
-                .until(ExpectedConditions.visibilityOf(waitElement))
-                .isDisplayed();
+        waitElement(waitJustElement);
     }
 
     public void sentEmail() {
         emailEstimate.click();
-        (new WebDriverWait(driver, 50))
-                .until(ExpectedConditions.visibilityOf(emailToSent))
-                .isDisplayed();
-
+        waitElement(emailToSent);
     }
 
+    public String getTotalCostInGoogleCalculator(){
+        waitElement(costInGoogleCalculator);
+        return costInGoogleCalculator.getText().substring(26, 34);
+    }
 }

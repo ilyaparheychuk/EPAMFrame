@@ -11,14 +11,9 @@ public class TheSameCostTest extends CommonConditions {
 
     @Test
     public void theSameCostTest() {
-        String costInMinuteMail = driver.findElement(By.xpath("//*[@id='mobilepadding']/td/h2"))
-                .getText()
-                .substring(28, 36);
-        driver.switchTo().window(TenMinutesMailPage.tabs.get(0));
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        String costInGoogleCalculate = driver.findElement(By.xpath("(.//b[@class='ng-binding'])[2]"))
-                .getText()
-                .substring(26, 34);
+        String costInMinuteMail = tenMinutesPage.getTotalCostInMinutesMail();
+        tenMinutesPage.switchPage(0);
+        String costInGoogleCalculate = calculatorPage.getTotalCostInGoogleCalculator();
         Assert.assertEquals(costInMinuteMail, costInGoogleCalculate);
     }
 }

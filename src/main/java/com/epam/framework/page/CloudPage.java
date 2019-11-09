@@ -4,10 +4,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class CloudPage {
+public class CloudPage extends AbstractPage {
+
+    private String PAGE_URL = "https://cloud.google.com/";
+    private String WHAT_I_SEARCH = "Google Cloud Platform Pricing Calculator";
+    private String GIVE_UP_PAGE = "https://cloudpricingcalculator.appspot.com";
 
     @FindBy(xpath = ".//input[@class='devsite-search-field devsite-search-query' and @name='q']")
     private WebElement search;
@@ -18,22 +20,18 @@ public class CloudPage {
     @FindBy(xpath = "//*[@id=\'gc-wrapper\']/div[2]")
     private WebElement nullField;
 
-    WebDriver driver;
-
     public CloudPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
         PageFactory.initElements(driver, this);
     }
 
     public void search() {
-        driver.get("https://cloud.google.com/");
+        driver.get(PAGE_URL);
         search.click();
-        search.sendKeys("Google Cloud Platform Pricing Calculator");
+        search.sendKeys(WHAT_I_SEARCH);
         search.submit();
-        (new WebDriverWait(driver, 20))
-                .until(ExpectedConditions.visibilityOf(searchCalc)).click();
-        (new WebDriverWait(driver, 40))
-                .until(ExpectedConditions.visibilityOf(nullField)).click();
-        driver.get("https://cloudpricingcalculator.appspot.com");
+        waitElement(searchCalc).click();
+        waitElement(nullField).click();
+        driver.get(GIVE_UP_PAGE);
     }
 }

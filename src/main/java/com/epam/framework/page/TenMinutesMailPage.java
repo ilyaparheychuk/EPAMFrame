@@ -1,16 +1,12 @@
 package com.epam.framework.page;
 
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
 import java.util.ArrayList;
 
-public class TenMinutesMailPage {
+public class TenMinutesMailPage extends AbstractPage{
 
     @FindBy(xpath = "//*[@id=\'input_415\']")
     private WebElement emailToSent;
@@ -27,50 +23,53 @@ public class TenMinutesMailPage {
     @FindBy(xpath = ".//input[@type='text' and @id='mailAddress']")
     private WebElement fieldWithEmail;
 
+    @FindBy(xpath = "//*[@id='mobilepadding']/td/h2")
+    private WebElement costInMinuteMail;
+
+    @FindBy(xpath = ".//span[@id='totalMessageCount' and text()='1']")
+    private WebElement waitMessage;
+
     private static String email;
-    WebDriver driver;
     public static ArrayList<String> tabs;
-    private JavascriptExecutor jse;
+    private String ATTRIBUTE = "value";
 
     public TenMinutesMailPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
         PageFactory.initElements(driver, this);
-        this.jse = (JavascriptExecutor) driver;
+    }
+
+    public WebDriver switchPage(int page){
+        return driver.switchTo().window(tabs.get(page));
     }
 
     public void openTenMinuteMail() {
-        jse.executeScript("window.open('https://10minutemail.com')");
+        openTenMinuteMailPage();
         tabs = new ArrayList<String>(driver.getWindowHandles());
         driver.switchTo().window(tabs.get(1));
-        (new WebDriverWait(driver, 50))
-                .until(ExpectedConditions.visibilityOf(fieldWithEmail))
-                .isDisplayed();
-        email = fieldWithEmail.getAttribute("value");
+        waitElement(fieldWithEmail);
+        email = fieldWithEmail.getAttribute(ATTRIBUTE);
     }
 
     public void comeToGooglePage() {
-        driver.switchTo().window(tabs.get(0));
+        switchPage(0);
         emailToSent.click();
         emailToSent.sendKeys(email);
         sendEmail.click();
     }
 
-    public void waitEmailFromGoogle() throws InterruptedException {
-        driver.switchTo().window(tabs.get(1));
+    public void waitEmailFromGoogle(){
+        switchPage(1);
         driver.navigate().refresh();
-        Thread.sleep(30000);
-        driver.navigate().refresh();
-        (new WebDriverWait(driver, 50))
-                .until(ExpectedConditions.visibilityOf(fieldWithEmail))
-                .isDisplayed();
-        jse.executeScript("window.scrollBy(0,900)");
-        (new WebDriverWait(driver, 50))
-                .until(ExpectedConditions.visibilityOf(emailFromGoogle))
-                .isDisplayed();
+        waitElement(waitMessage);
+        waitElement(fieldWithEmail);
+        scrollDown();
+        waitElement(emailFromGoogle);
         emailFromGoogle.click();
-        jse.executeScript("window.scrollBy(0,900)");
-        (new WebDriverWait(driver, 50))
-                .until(ExpectedConditions.visibilityOf(waitEmailFromGoogle))
-                .isDisplayed();
+        scrollDown();
+        waitElement(waitEmailFromGoogle);
+    }
+
+    public String getTotalCostInMinutesMail(){
+        return costInMinuteMail.getText().substring(28, 36);
     }
 }
