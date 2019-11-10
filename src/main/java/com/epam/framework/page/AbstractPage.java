@@ -13,21 +13,21 @@ public abstract class AbstractPage {
     protected final String SCROLL_VALUE = "window.scrollBy(0,840)";
     protected final String NEW_PAGE_VALUE = "window.open('https://10minutemail.com')";
 
-    public AbstractPage(WebDriver driver){
-        this.driver=driver;
+    public AbstractPage(WebDriver driver) {
+        this.driver = driver;
     }
 
-    public WebElement waitElement(WebElement element){
-        return (new WebDriverWait(driver,TIME_OUT_IN_SECONDS))
+    public WebElement waitElement(WebElement element) {
+        return (new WebDriverWait(driver, TIME_OUT_IN_SECONDS))
                 .until(ExpectedConditions.visibilityOf(element));
     }
 
-    public JavascriptExecutor scrollDown(){
+    public JavascriptExecutor scrollDown() {
         JavascriptExecutor javascriptExecutor = (JavascriptExecutor) driver;
         return (JavascriptExecutor) javascriptExecutor.executeScript(SCROLL_VALUE);
     }
 
-    public JavascriptExecutor openTenMinuteMailPage(){
+    public JavascriptExecutor openTenMinuteMailPage() {
         JavascriptExecutor javascriptExecutor = (JavascriptExecutor) driver;
         return (JavascriptExecutor) javascriptExecutor.executeScript(NEW_PAGE_VALUE);
     }

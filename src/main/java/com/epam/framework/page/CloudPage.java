@@ -11,13 +11,13 @@ public class CloudPage extends AbstractPage {
     private String WHAT_I_SEARCH = "Google Cloud Platform Pricing Calculator";
     private String GIVE_UP_PAGE = "https://cloudpricingcalculator.appspot.com";
 
-    @FindBy(xpath = ".//input[@class='devsite-search-field devsite-search-query' and @name='q']")
+    @FindBy(xpath = ".//input[@class='devsite-search-field devsite-search-query']")
     private WebElement search;
 
-    @FindBy(xpath = "(.//a[@href='https://cloud.google.com/products/calculator/' and @class='gs-title'])[1]")
+    @FindBy(xpath = "(.//a[@data-ctorig='https://cloud.google.com/products/calculator/'])[1]")
     private WebElement searchCalc;
 
-    @FindBy(xpath = "//*[@id=\'gc-wrapper\']/div[2]")
+    @FindBy(xpath = ".//div[@class='devsite-main-content clearfix']")
     private WebElement nullField;
 
     public CloudPage(WebDriver driver) {
