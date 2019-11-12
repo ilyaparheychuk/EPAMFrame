@@ -6,9 +6,7 @@ import com.epam.framework.page.CloudPage;
 import com.epam.framework.page.TenMinutesMailPage;
 import com.epam.framework.util.TestListener;
 import org.openqa.selenium.WebDriver;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Listeners;
+import org.testng.annotations.*;
 
 @Listeners({TestListener.class})
 public class CommonConditions {
@@ -18,7 +16,7 @@ public class CommonConditions {
     CalculatorPage calculatorPage;
     TenMinutesMailPage tenMinutesPage;
 
-    @BeforeTest
+    @BeforeMethod
     public void beforeTest() {
         driver = DriverSingleton.getDriver();
         cloudPage = new CloudPage(driver);
@@ -32,7 +30,7 @@ public class CommonConditions {
         tenMinutesPage.waitEmailFromGoogle();
     }
 
-    @AfterTest
+    @AfterMethod
     public void afterTest() {
         DriverSingleton.closeDriver();
     }
