@@ -13,7 +13,7 @@ public class CalculatorPage extends AbstractPage {
     @FindBy(id = "input_53")
     private WebElement numberOfInstances;
 
-    @FindBy(id = "select_value_label_49 %s")
+    @FindBy(id = "select_value_label_49")
     private WebElement typeInstance;
 
     @FindBy(xpath = "//*[contains(text(), 'Add GPUs.')]")
