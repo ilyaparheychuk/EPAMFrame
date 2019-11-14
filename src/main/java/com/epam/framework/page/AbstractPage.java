@@ -9,12 +9,13 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public abstract class AbstractPage {
 
     protected WebDriver driver;
+    protected JavascriptExecutor javascriptExecutor;
     protected final int TIME_OUT_IN_SECONDS = 50;
-    protected final String SCROLL_VALUE = "window.scrollBy(0,840)";
-    protected final String NEW_PAGE_VALUE = "window.open('https://10minutemail.com')";
+    protected final String JS_REQUEST = "window.scrollBy(0,%s)";
 
     public AbstractPage(WebDriver driver) {
         this.driver = driver;
+        javascriptExecutor = (JavascriptExecutor) driver;
     }
 
     public WebElement waitElement(WebElement element) {
@@ -22,13 +23,8 @@ public abstract class AbstractPage {
                 .until(ExpectedConditions.visibilityOf(element));
     }
 
-    public JavascriptExecutor scrollDown() {
-        JavascriptExecutor javascriptExecutor = (JavascriptExecutor) driver;
-        return (JavascriptExecutor) javascriptExecutor.executeScript(SCROLL_VALUE);
-    }
-
-    public JavascriptExecutor openTenMinuteMailPage() {
-        JavascriptExecutor javascriptExecutor = (JavascriptExecutor) driver;
-        return (JavascriptExecutor) javascriptExecutor.executeScript(NEW_PAGE_VALUE);
+    public JavascriptExecutor scrollDown(String scrollValue) {
+        return (JavascriptExecutor) javascriptExecutor
+                .executeScript(String.format(JS_REQUEST, scrollValue));
     }
 }

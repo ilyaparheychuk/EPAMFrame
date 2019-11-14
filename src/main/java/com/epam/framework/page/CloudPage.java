@@ -9,7 +9,7 @@ public class CloudPage extends AbstractPage {
 
     private String PAGE_URL = "https://cloud.google.com/";
     private String WHAT_I_SEARCH = "Google Cloud Platform Pricing Calculator";
-    private String GIVE_UP_PAGE = "https://cloudpricingcalculator.appspot.com";
+    private String INTO_FRAME = "https://cloudpricingcalculator.appspot.com";
 
     @FindBy(xpath = ".//input[@class='devsite-search-field devsite-search-query']")
     private WebElement search;
@@ -32,6 +32,6 @@ public class CloudPage extends AbstractPage {
         search.submit();
         waitElement(searchCalc).click();
         waitElement(nullField).click();
-        driver.get(GIVE_UP_PAGE);
+        driver.get(INTO_FRAME);
     }
 }

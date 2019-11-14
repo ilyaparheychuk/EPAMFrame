@@ -11,7 +11,7 @@ import org.testng.annotations.*;
 @Listeners({TestListener.class})
 public class CommonConditions {
 
-    protected WebDriver driver;
+    WebDriver driver;
     CloudPage cloudPage;
     CalculatorPage calculatorPage;
     TenMinutesMailPage tenMinutesPage;

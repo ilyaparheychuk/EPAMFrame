@@ -1,5 +1,6 @@
 package com.epam.framework.page;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 
 public class TenMinutesMailPage extends AbstractPage {
 
-    @FindBy(id = "input_415")
+    @FindBy(xpath = ".//input[@ng-model='emailQuote.user.email']")
     private WebElement emailToSent;
 
     @FindBy(xpath = ".//button[@aria-label='Send Email']")
@@ -29,11 +30,16 @@ public class TenMinutesMailPage extends AbstractPage {
 
     private static String email;
     public static ArrayList<String> tabs;
-    private String ATTRIBUTE = "value";
+    protected final String ATTRIBUTE = "value";
+    protected final String NEW_PAGE_VALUE = "window.open('https://10minutemail.com')";
 
     public TenMinutesMailPage(WebDriver driver) {
         super(driver);
         PageFactory.initElements(driver, this);
+    }
+
+    public JavascriptExecutor openTenMinuteMailPage() {
+        return (JavascriptExecutor) javascriptExecutor.executeScript(NEW_PAGE_VALUE);
     }
 
     public WebDriver switchPage(int page) {
@@ -59,10 +65,10 @@ public class TenMinutesMailPage extends AbstractPage {
         switchPage(1);
         waitElement(waitMessage);
         waitElement(fieldWithEmail);
-        scrollDown();
+        scrollDown("700");
         waitElement(emailFromGoogle);
         emailFromGoogle.click();
-        scrollDown();
+        scrollDown("950");
         waitElement(costInMinuteMail);
     }
 
