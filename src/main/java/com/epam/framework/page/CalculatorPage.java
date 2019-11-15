@@ -1,8 +1,5 @@
 package com.epam.framework.page;
 
-import com.epam.framework.user.User;
-import com.epam.framework.user.UserCreator;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -58,59 +55,46 @@ public class CalculatorPage extends AbstractPage {
     @FindBy(xpath = "(.//b[@class='ng-binding'])[2]")
     private WebElement costInGoogleCalculator;
 
-    private WebElement typeInstanceStandard() {
-        return driver.findElement
-                (By.xpath(user.getTypeInstanceStandard()));
-    }
-
-    private WebElement locationDatacenter() {
-        return driver.findElement
-                (By.xpath(user.getIDLocationDatacenter()));
-    }
-
-    private WebElement typeOfGPUTesla() {
-        return driver.findElement
-                (By.xpath(user.getTypeOfGpuTesla()));
-    }
-
-    private User user;
-
     public CalculatorPage(WebDriver driver) {
         super(driver);
         PageFactory.initElements(driver, this);
-        user = UserCreator.withCredentialsFromProperty();
     }
 
     public void fillingTheForm() {
-        waitElement(numberOfInstances).click();
+        wait.waitElement(numberOfInstances,5)
+                .click();
         numberOfInstances.sendKeys(user.getNumberOfInstances());
         typeInstance.click();
-        typeInstanceStandard().click();
-        waitElement(addGPU);
+        dynamicElement.typeInstanceStandard
+                (user.getTypeInstanceStandard()).click();
+        wait.waitElement(addGPU,5);
         addGPU.click();
         numberOfGPU.click();
         numberOfGPUOne.click();
         typeOfGPU.click();
-        typeOfGPUTesla().click();
-        scrollDown("750");
-        waitElement(localSSD).click();
+        dynamicElement.typeOfGPUTesla
+                (user.getTypeOfGpuTesla()).click();
+        scroll.scrollDown("750");
+        wait.waitElement(localSSD,5)
+                .click();
         localSSDWhatIWant.click();
         datacenter.click();
-        waitElement(locationDatacenter())
+        wait.waitElement(dynamicElement.locationDatacenter
+                (user.getIDLocationDatacenter()),5)
                 .click();
         commited.click();
         commitedOneYear.click();
         addToEstimate.click();
-        waitElement(waitJustElement);
+        wait.waitElement(waitJustElement,5);
     }
 
     public void sentEmail() {
         emailEstimate.click();
-        waitElement(emailToSent);
+        wait.waitElement(emailToSent,5);
     }
 
     public String getTotalCostInGoogleCalculator() {
-        waitElement(costInGoogleCalculator);
+        wait.waitElement(costInGoogleCalculator,5);
         return costInGoogleCalculator.getText().substring(26, 34);
     }
 }

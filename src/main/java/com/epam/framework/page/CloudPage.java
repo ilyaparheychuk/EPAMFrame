@@ -30,8 +30,9 @@ public class CloudPage extends AbstractPage {
         search.click();
         search.sendKeys(WHAT_I_SEARCH);
         search.submit();
-        waitElement(searchCalc).click();
-        waitElement(nullField).click();
+        wait.waitElement(searchCalc,7)
+                .click();
+        wait.waitElement(nullField,7).click();
         driver.get(INTO_FRAME);
     }
 }

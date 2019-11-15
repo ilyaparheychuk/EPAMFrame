@@ -1,6 +1,5 @@
 package com.epam.framework.page;
 
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -9,6 +8,11 @@ import org.openqa.selenium.support.PageFactory;
 import java.util.ArrayList;
 
 public class TenMinutesMailPage extends AbstractPage {
+
+    private static String email;
+    public static ArrayList<String> tabs;
+    protected final String ATTRIBUTE = "value";
+    protected final String TEN_MINUTE_MAIL_PAGE = "window.open('https://10minutemail.com')";
 
     @FindBy(xpath = ".//input[@ng-model='emailQuote.user.email']")
     private WebElement emailToSent;
@@ -28,18 +32,9 @@ public class TenMinutesMailPage extends AbstractPage {
     @FindBy(xpath = ".//span[@id='totalMessageCount' and text()='1']")
     private WebElement waitMessage;
 
-    private static String email;
-    public static ArrayList<String> tabs;
-    protected final String ATTRIBUTE = "value";
-    protected final String NEW_PAGE_VALUE = "window.open('https://10minutemail.com')";
-
     public TenMinutesMailPage(WebDriver driver) {
         super(driver);
         PageFactory.initElements(driver, this);
-    }
-
-    public JavascriptExecutor openTenMinuteMailPage() {
-        return (JavascriptExecutor) javascriptExecutor.executeScript(NEW_PAGE_VALUE);
     }
 
     public WebDriver switchPage(int page) {
@@ -47,10 +42,10 @@ public class TenMinutesMailPage extends AbstractPage {
     }
 
     public void openTenMinuteMail() {
-        openTenMinuteMailPage();
+        openNewPages.openNewPage(TEN_MINUTE_MAIL_PAGE);
         tabs = new ArrayList<String>(driver.getWindowHandles());
         switchPage(1);
-        waitElement(fieldWithEmail);
+        wait.waitElement(fieldWithEmail,10);
         email = fieldWithEmail.getAttribute(ATTRIBUTE);
     }
 
@@ -63,13 +58,13 @@ public class TenMinutesMailPage extends AbstractPage {
 
     public void waitEmailFromGoogle() {
         switchPage(1);
-        waitElement(waitMessage);
-        waitElement(fieldWithEmail);
-        scrollDown("700");
-        waitElement(emailFromGoogle);
+        wait.waitElement(waitMessage,60);
+        wait.waitElement(fieldWithEmail,5);
+        scroll.scrollDown("700");
+        wait.waitElement(emailFromGoogle,5);
         emailFromGoogle.click();
-        scrollDown("950");
-        waitElement(costInMinuteMail);
+        scroll.scrollDown("950");
+        wait.waitElement(costInMinuteMail,3);
     }
 
     public String getTotalCostInMinutesMail() {
